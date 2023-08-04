@@ -4,6 +4,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 import { Database } from './utils/database.mjs'
 import routes from './router/index.mjs'
+import { authenticate, authenticationHandler } from './middlewares/auth.middleware.mjs'
 
 dotenv.config()
 const app = express()
@@ -15,6 +16,8 @@ app.options('*', cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('tiny'))
+app.use(authenticate())
+app.use(authenticationHandler)
 
 Database.connect()
 
