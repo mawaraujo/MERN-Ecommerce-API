@@ -1,5 +1,5 @@
-import mongoose from 'mongoose'
-import mongoosePaginate from 'mongoose-paginate-v2'
+const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const orderSchema = mongoose.Schema({
   orderItems: [{
@@ -63,7 +63,7 @@ orderSchema.plugin(mongoosePaginate)
 //   virtuals: true
 // })
 
-export const Order = mongoose.model(
+exports.Order = mongoose.model(
   'Order',
   orderSchema
 )

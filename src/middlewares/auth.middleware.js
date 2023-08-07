@@ -1,4 +1,4 @@
-import { expressjwt } from 'express-jwt'
+const { expressjwt } = require('express-jwt')
 
 const APP_JWT_SECRET = (process.env.APP_JWT_SECRET)
 
@@ -9,7 +9,7 @@ async function isRevoked (_req, { payload }) {
   )
 }
 
-export function authenticate () {
+exports.authenticate = () => {
   return expressjwt({
     secret: APP_JWT_SECRET,
     algorithms: [
@@ -18,6 +18,13 @@ export function authenticate () {
     isRevoked
   }).unless({
     path: [
+      {
+        url: /\/public\/upload(.*)/,
+        methods: [
+          'GET',
+          'OPTIONS'
+        ]
+      },
       {
         url: /\/products(.*)/,
         methods: [
@@ -38,7 +45,7 @@ export function authenticate () {
   })
 }
 
-export function authenticationHandler (err, req, res, next) {
+exports.authenticationHandler = (err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
     res.status(401).json({
       message: 'The user is not authorized'

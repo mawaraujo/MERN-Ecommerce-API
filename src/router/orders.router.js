@@ -1,5 +1,5 @@
-import { Router } from 'express'
-import { Order, OrderItem } from '../models/index.mjs'
+const { Router } = require('express')
+const { Order, OrderItem } = require('../models')
 
 const router = Router()
 
@@ -273,4 +273,4 @@ router.get('/get/users/:userId', async (req, res) => {
   }
 })
 
-export default router
+module.exports = router

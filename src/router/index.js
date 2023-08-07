@@ -1,11 +1,11 @@
-import apiRouter from './api.router.mjs'
-import productsRouter from './products.router.mjs'
-import categoriesRouter from './categories.router.mjs'
-import usersRouter from './users.router.mjs'
-import authRouter from './auth.router.mjs'
-import orderRouter from './orders.router.mjs'
+const apiRouter = require('./api.router')
+const productsRouter = require('./products.router')
+const categoriesRouter = require('./categories.router')
+const usersRouter = require('./users.router')
+const authRouter = require('./auth.router')
+const orderRouter = require('./orders.router')
 
-export default [
+module.exports = [
   {
     uri: '/api',
     router: apiRouter

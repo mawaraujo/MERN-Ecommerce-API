@@ -1,5 +1,5 @@
-import mongoose from 'mongoose'
-import mongoosePaginate from 'mongoose-paginate-v2'
+const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const userSchema = mongoose.Schema({
   name: {
@@ -55,7 +55,7 @@ userSchema.plugin(mongoosePaginate)
 //   virtuals: true
 // })
 
-export const User = mongoose.model(
+exports.User = mongoose.model(
   'User',
   userSchema
 )

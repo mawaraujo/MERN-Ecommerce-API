@@ -1,6 +1,6 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 
-export class Database {
+class Database {
   static connect () {
     mongoose
       .connect(
@@ -17,4 +17,8 @@ export class Database {
         console.log(error)
       })
   }
+}
+
+module.exports = {
+  Database
 }

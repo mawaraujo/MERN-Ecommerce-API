@@ -1,7 +1,9 @@
-import { Router } from 'express'
-import { Category, Product } from '../models/index.mjs'
+const { Router } = require('express')
+const { Category, Product } = require('../models')
+const { createStorage } = require('../middlewares/storage.middleware.js')
 
 const router = Router()
+const storage = createStorage('/upload/products')
 
 router.get('/', async (req, res) => {
   try {
@@ -45,6 +47,7 @@ router.get('/:id', async (req, res) => {
       res.status(404).json({
         message: 'Product not found'
       })
+      return
     }
 
     res.json(product)
@@ -59,14 +62,12 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', storage.single('image'), async (req, res) => {
   try {
     const {
       name,
       description,
       richDescription,
-      image,
-      images,
       brand,
       price,
       category,
@@ -76,6 +77,17 @@ router.post('/', async (req, res) => {
       isFeatured,
       display
     } = req.body
+
+    if (!req.file) {
+      res.status(400).json({
+        message: 'Image field is required'
+      })
+      return
+    }
+
+    const filename = req.file.filename
+    const fileBasePath = `${req.protocol}://${req.get('host')}/public/upload/products`
+    const path = `${fileBasePath}/${filename}`
 
     const categoryFind = await Category.findById(category)
 
@@ -90,8 +102,7 @@ router.post('/', async (req, res) => {
       name,
       description,
       richDescription,
-      image,
-      images,
+      image: path,
       brand,
       price,
       category,
@@ -121,14 +132,12 @@ router.post('/', async (req, res) => {
   }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', storage.single('image'), async (req, res) => {
   try {
     const {
       name,
       description,
       richDescription,
-      image,
-      images,
       brand,
       price,
       category,
@@ -139,14 +148,32 @@ router.put('/:id', async (req, res) => {
       display
     } = req.body
 
-    const product = await Product.findByIdAndUpdate(
+    const product = Product.findById(req.params.id)
+    if (!product) {
+      res.status(404).json({
+        message: 'Product not found'
+      })
+      return
+    }
+
+    const file = req.file
+    let imagePath
+
+    if (file) {
+      const filename = req.file.filename
+      const fileBasePath = `${req.protocol}://${req.get('host')}/public/upload/products`
+      imagePath = `${fileBasePath}/${filename}`
+    } else {
+      imagePath = product.image
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
       {
         name,
         description,
         richDescription,
-        image,
-        images,
+        image: imagePath,
         brand,
         price,
         category,
@@ -161,17 +188,46 @@ router.put('/:id', async (req, res) => {
       }
     )
 
+    res.json({
+      message: 'Product updated',
+      updatedProduct
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({
+      message: 'Error ocurred'
+    })
+  }
+})
+
+router.put('/images/:id', storage.array('images', 10), async (req, res) => {
+  try {
+    const files = req.files
+    const imagesPaths = []
+    const basePath = `${req.protocol}://${req.get('host')}/public/upload/`
+
+    if (files) {
+      files.forEach((file) => {
+        imagesPaths.push(`${basePath}${file.filename}`)
+      })
+    }
+
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        images: imagesPaths
+      },
+      { new: true }
+    )
+
     if (!product) {
       res.status(404).json({
-        message: 'Product not found'
+        message: 'The gallery cannot be updated'
       })
       return
     }
 
-    res.json({
-      message: 'Product updated',
-      product
-    })
+    res.send(product)
   } catch (error) {
     console.log(error)
     res.status(400).json({
@@ -221,4 +277,4 @@ router.get('/get/count', async (req, res) => {
   }
 })
 
-export default router
+module.exports = router

@@ -1,6 +1,6 @@
-import { Router } from 'express'
-import { User } from '../models/user.model.mjs'
-import { encryptPassword } from '../utils/encrypt.mjs'
+const { Router } = require('express')
+const { User } = require('../models')
+const { encryptPassword } = require('../utils/encrypt.js')
 
 const router = Router()
 
@@ -144,4 +144,4 @@ router.get('/get/count', async (req, res) => {
   }
 })
 
-export default router
+module.exports = router

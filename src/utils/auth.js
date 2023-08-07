@@ -1,10 +1,10 @@
-import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
+const jwt = require('jsonwebtoken')
+const dotenv = require('dotenv')
 dotenv.config()
 
 const APP_JWT_SECRET = (process.env.APP_JWT_SECRET)
 
-export function authenticate (payload) {
+exports.authenticate = (payload) => {
   const token = jwt.sign(payload, APP_JWT_SECRET, {
     algorithm: 'HS256',
     expiresIn: '1d'

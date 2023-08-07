@@ -1,7 +1,7 @@
-import { Router } from 'express'
-import { User } from '../models/index.mjs'
-import { comparePassword, encryptPassword } from '../utils/encrypt.mjs'
-import { authenticate } from '../utils/auth.mjs'
+const { Router } = require('express')
+const { User } = require('../models')
+const { comparePassword, encryptPassword } = require('../utils/encrypt.js')
+const { authenticate } = require('../utils/auth.js')
 
 const router = Router()
 
@@ -96,4 +96,4 @@ router.post('/register', async (req, res) => {
   }
 })
 
-export default router
+module.exports = router

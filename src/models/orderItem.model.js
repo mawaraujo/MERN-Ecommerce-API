@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 
 const orderItemSchema = mongoose.Schema({
   quantity: {
@@ -20,7 +20,7 @@ const orderItemSchema = mongoose.Schema({
 //   virtuals: true
 // })
 
-export const OrderItem = mongoose.model(
+exports.OrderItem = mongoose.model(
   'OrderItem',
   orderItemSchema
 )
