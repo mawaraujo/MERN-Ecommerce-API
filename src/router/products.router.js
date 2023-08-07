@@ -200,15 +200,15 @@ router.put('/:id', storage.single('image'), async (req, res) => {
   }
 })
 
-router.put('/images/:id', storage.array('images', 10), async (req, res) => {
+router.put('/image-gallery/:id', storage.array('images', 10), async (req, res) => {
   try {
     const files = req.files
     const imagesPaths = []
-    const basePath = `${req.protocol}://${req.get('host')}/public/upload/`
+    const basePath = `${req.protocol}://${req.get('host')}/public/upload/products`
 
     if (files) {
       files.forEach((file) => {
-        imagesPaths.push(`${basePath}${file.filename}`)
+        imagesPaths.push(`${basePath}/${file.filename}`)
       })
     }
 
