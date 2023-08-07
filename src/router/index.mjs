@@ -2,7 +2,8 @@ import apiRouter from './api.router.mjs'
 import productsRouter from './products.router.mjs'
 import categoriesRouter from './categories.router.mjs'
 import usersRouter from './users.router.mjs'
-import authRouter from './auth.mjs'
+import authRouter from './auth.router.mjs'
+import orderRouter from './orders.router.mjs'
 
 export default [
   {
@@ -24,5 +25,9 @@ export default [
   {
     uri: '/auth',
     router: authRouter
+  },
+  {
+    uri: '/orders',
+    router: orderRouter
   }
 ]

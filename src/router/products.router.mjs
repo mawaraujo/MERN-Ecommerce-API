@@ -207,13 +207,6 @@ router.get('/get/count', async (req, res) => {
   try {
     const totalProducts = await Product.count({})
 
-    if (!totalProducts) {
-      res.status(400).json({
-        message: 'Error ocurred'
-      })
-      return
-    }
-
     res.json({
       totalProducts
     })

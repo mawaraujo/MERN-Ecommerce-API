@@ -47,13 +47,13 @@ const userSchema = mongoose.Schema({
 
 userSchema.plugin(mongoosePaginate)
 
-userSchema.virtual('id').get(function () {
-  return this._id.toHexString()
-})
+// userSchema.virtual('id').get(function () {
+//   return this._id.toHexString()
+// })
 
-userSchema.set('toJSON', {
-  virtuals: true
-})
+// userSchema.set('toJSON', {
+//   virtuals: true
+// })
 
 export const User = mongoose.model(
   'User',

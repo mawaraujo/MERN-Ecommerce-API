@@ -72,13 +72,13 @@ const productSchema = mongoose.Schema({
 
 productSchema.plugin(mongoosePaginate)
 
-productSchema.virtual('id').get(function () {
-  return this._id.toHexString()
-})
+// productSchema.virtual('id').get(function () {
+//   return this._id.toHexString()
+// })
 
-productSchema.set('toJSON', {
-  virtuals: true
-})
+// productSchema.set('toJSON', {
+//   virtuals: true
+// })
 
 export const Product = mongoose.model(
   'Product',
